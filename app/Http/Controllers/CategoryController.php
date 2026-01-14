@@ -27,4 +27,27 @@ class CategoryController extends Controller
         ->route('categories.add-category')
         ->with('success', 'Category created successfully!');
     }
+
+    public function edit($id)
+    {
+        $category = Category::findOrFail($id);
+        return view('categories.edit-category', compact('category'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $category = Category::findOrFail($id);
+        $category->update($request->all());
+        $currentPage = 'category';
+
+        return redirect()->route('categories.category')
+        ->with('currentPage', 'categories')
+                         ->with('success', 'Category updated successfully!');
+    }
+
 }

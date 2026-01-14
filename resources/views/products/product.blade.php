@@ -26,11 +26,16 @@
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
+        <button onclick="window.location.href='{{ route('products.add-product') }}'" class="btn btn-primary">Add Product</button>
       </div><!-- /.container-fluid -->
     </div>
-
     <section class="content">
       <div class="container-fluid">
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
         <div class="card">
               <div class="card-body">
                 <table id="example1" class="table table-bordered table-striped">
@@ -49,9 +54,9 @@
                           <td>{{ $loop->iteration }}</td>
                           <td>{{ $product->name }}</td>
                           <td>{{ $product->price }}</td>
-                          <td>{{ $product->category_id }}</td>
+                          <td>{{ $product->category->name ?? 'N/A' }}</td>
                           <td>
-                              <a href="#" class="btn btn-sm btn-primary">Edit</a>
+                              <a href="{{ route('product.edit', $product->id) }}" class="btn btn-sm btn-primary">Edit</a>
                               <a href="#" class="btn btn-sm btn-danger">Delete</a>
                           </td>
                       </tr>

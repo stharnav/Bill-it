@@ -16,6 +16,12 @@ Route::get('/sales', function () {
 Route::get('/products', [ProductController::class, 'index'])->name('products.product');
 Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
 Route::get('/add-product', [ProductController::class, 'fetchCategories'])->name('products.add-product');
+Route::get('/product/{id}/edit', [ProductController::class, 'edit'])
+    ->name('product.edit');
+
+Route::put('/product/{id}', [ProductController::class, 'update'])
+    ->name('product.update');
+
 
 
 Route::get('/category', [CategoryController::class, 'index'])
@@ -24,6 +30,9 @@ Route::post('/category/store', [CategoryController::class, 'store'])->name('cate
 Route::get('/add-category', function () {
     return view('categories.add-category', ['currentPage' => 'add-category']);
 })->name('categories.add-category');
+Route::get('/category/{id}/editCategory', [CategoryController::class, 'edit'])->name('category.edit');
+Route::put('/category/{id}', [CategoryController::class, 'update'])->name('category.update');
+
 
 Route::get('/about-me', function () {
     return view('about.about-me', ['currentPage' => 'about-me']);

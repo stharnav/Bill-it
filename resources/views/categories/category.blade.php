@@ -28,12 +28,18 @@
                 </ol>
               </div>
             </div>
+            <button onclick="window.location.href='{{ route('categories.add-category') }}'" class="btn btn-primary">Add Category</button>
           </div>
         </div>
-
+        
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
                 <div class="card">
                     <div class="card-body">
                         <table id="example1" class="table table-bordered table-striped">
@@ -53,7 +59,7 @@
                                         <td>{{ $category->name }}</td>
                                         <td>{{ $category->description }}</td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-primary">Edit</a>
+                                            <a href="{{ route('category.edit', $category->id) }}" class="btn btn-sm btn-primary">Edit</a>
                                             <a href="#" class="btn btn-sm btn-danger">Delete</a>
                                         </td>
                                     </tr>
