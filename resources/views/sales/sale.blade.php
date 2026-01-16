@@ -31,6 +31,7 @@
 
     <section class="content">
       <div class="container-fluid">
+        <button class="btn btn-primary" onclick="window.location='{{ route('sales.new-sales') }}'">New Sale</button><br><br>
         <div class="card">
               <div class="card-body">
                 <table id="example1" class="table table-bordered table-striped">
@@ -44,66 +45,22 @@
                   </tr>
                   </thead>
                   <tbody>
+                  @foreach($sales as $sale)
                   <tr>
-                    <td>Trident</td>
-                    <td>Internet
-                      Explorer 4.0
-                    </td>
-                    <td>Win 95+</td>
-                    <td> 4</td>
-                    <td>X</td>
+                    <td>{{ $sale->invoice_no }}</td>
+                    <td>{{ $sale->description }}</td>
+                    <td>{{ $sale->mode_of_payment }}</td>
+                    <td>{{ $sale->payment_details }}</td>
+                    <td>{{ $sale->discount }}</td>
                   </tr>
-                  <tr>
-                    <td>Trident</td>
-                    <td>Internet
-                      Explorer 5.0
-                    </td>
-                    <td>Win 95+</td>
-                    <td>5</td>
-                    <td>C</td>
-                  </tr>
-                    <tr>
-                    <td>Misc</td>
-                    <td>Links</td>
-                    <td>Text only</td>
-                    <td>-</td>
-                    <td>X</td>
-                  </tr>
-                  <tr>
-                    <td>Misc</td>
-                    <td>Lynx</td>
-                    <td>Text only</td>
-                    <td>-</td>
-                    <td>X</td>
-                  </tr>
-                  <tr>
-                    <td>Misc</td>
-                    <td>IE Mobile</td>
-                    <td>Windows Mobile 6</td>
-                    <td>-</td>
-                    <td>C</td>
-                  </tr>
-                  <tr>
-                    <td>Misc</td>
-                    <td>PSP browser</td>
-                    <td>PSP</td>
-                    <td>-</td>
-                    <td>C</td>
-                  </tr>
-                  <tr>
-                    <td>Other browsers</td>
-                    <td>All others</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>U</td>
-                  </tr>
+                  @endforeach
                   </tbody>
                   <tfoot>
                   <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
+                    <th>Rank</th>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th></th>
                     <th>CSS grade</th>
                   </tr>
                   </tfoot>

@@ -29,27 +29,38 @@
     </div>
     <section class="content">
       <div class="container-fluid">
+        @if (session('success'))
+          <div class="alert alert-success">
+            {{ session('success') }}
+          </div>
+        @endif
+        @if (session('error'))
+          <div class="alert alert-danger">
+            {{ session('error') }}
+          </div>
+        @endif
         <div class="row">
           <div class="col-md-6">
             <div class="card card-primary">     
               <div class="m-2 p-2">
-                      <form class="form-horizontal">
+                      <form class="form-horizontal" method="post" action="{{ route('profile.update') }}">
+                        @csrf
                         <div class="form-group row">
                           <label for="inputName" class="col-sm-2 col-form-label">Name</label>
                           <div class="col-sm-10">
-                            <input type="email" class="form-control" id="inputName" placeholder="Name" name="name">
+                            <input type="text" class="form-control" id="inputName" placeholder="Name" name="name" value="{{ Auth::user()->name }}">
                           </div>
                         </div>
                         <div class="form-group row">
                           <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
                           <div class="col-sm-10">
-                            <input type="email" class="form-control" id="inputEmail" placeholder="Email" name="email">
+                            <input type="email" class="form-control" id="inputEmail" placeholder="Email" name="email" value="{{ Auth::user()->email }}">
                           </div>
                         </div>
                         <div class="form-group row">
                           <label for="inputName2" class="col-sm-2 col-form-label">Username</label>
                           <div class="col-sm-10">
-                            <input type="text" class="form-control" id="inputName2" placeholder="Username" name="username">
+                            <input type="text" class="form-control" id="inputName2" placeholder="Username" name="username" value="{{ Auth::user()->username }}">
                           </div>
                         </div>
                         
@@ -66,7 +77,8 @@
           <div class="card card-primary">     
             <div class="m-2 p-2">
               <h3>Change Password</h3><hr>
-                    <form class="form-horizontal">
+                    <form class="form-horizontal" method="post" action="{{ route('password.update') }}">
+                      @csrf
                       <div class="form-group row">
                         <label for="inputEmail" class="col-sm-2 col-form-label">Old Password</label>
                         <div class="col-sm-10">
