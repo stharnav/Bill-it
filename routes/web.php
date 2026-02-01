@@ -14,6 +14,8 @@ Route::middleware(['auth'])->group(function(){
     });
 
     Route::get('/sales', [SalesController::class, 'index'] )->name('sales.sale');
+    Route::get('/sales/search', [SalesController::class, 'search'])->name('sales.search');
+    Route::post('/sales/store', [SalesController::class, 'store'])->name('sales.store');
     Route::get('/new-sales', function () {
         return view('sales.new-sales', ['currentPage' => 'new-sales']);
     })->name('sales.new-sales');

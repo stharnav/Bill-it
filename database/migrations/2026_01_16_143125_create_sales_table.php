@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->decimal('invoice_no', 15, 2);
+            $table->integer('invoice_no')->unique();
             $table->text('description')->nullable();
             $table->integer('mode_of_payment')->nullable();
             $table->text('payment_details')->nullable();

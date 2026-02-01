@@ -38,30 +38,33 @@
                   <thead>
                   <tr>
                     <th>Rank</th>
-                    <th>Order ID</th>
+                    <th>Invoice No</th>
                     <th>Date</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
+                    <th>Mode of Payment</th>
+                    <th>Payment Details</th>
+                    <th>Action</th>
                   </tr>
                   </thead>
                   <tbody>
                   @foreach($sales as $sale)
                   <tr>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $sale->invoice_no }}</td>
-                    <td>{{ $sale->description }}</td>
-                    <td>{{ $sale->mode_of_payment }}</td>
-                    <td>{{ $sale->payment_details }}</td>
-                    <td>{{ $sale->discount }}</td>
+                    <td>{{ $sale->created_at }}</td>
+                    <td>{{ $sale->mode_of_payment == 1 ? 'Cash' : ($sale->mode_of_payment == 2 ? 'Fonepay' : 'Other') }}</td>
+                    <td>{{ $sale->payment_details == '' ? 'N/A' : $sale->payment_details }}</td>
+                    <td></td>
                   </tr>
                   @endforeach
                   </tbody>
                   <tfoot>
                   <tr>
                     <th>Rank</th>
-                    <th>Order ID</th>
+                    <th>Invoice No</th>
                     <th>Date</th>
-                    <th></th>
-                    <th>CSS grade</th>
+                    <th>Mode of Payment</th>
+                    <th>Payment Details</th>
+                    <th>Action</th>
                   </tr>
                   </tfoot>
                 </table>
