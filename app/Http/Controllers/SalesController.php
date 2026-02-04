@@ -7,6 +7,7 @@ use App\Models\Sales;
 use App\Models\Product;
 use App\Models\SalesProduct;
 use Illuminate\Support\Facades\DB;
+use App\Models\Company;
 
 
 class SalesController extends Controller
@@ -38,6 +39,8 @@ class SalesController extends Controller
             'payment_details' => 'nullable|string',
             'description' => 'nullable|string',
             'discount' => 'nullable|numeric',
+            'tax' => 'nullable|numeric',
+            'customer_name' => 'nullable|string',
         ]);
 
         DB::beginTransaction();
@@ -50,14 +53,16 @@ class SalesController extends Controller
             $lastSale = Sales::latest()->first();
             $nextId = $lastSale ? $lastSale->id + 1 : 1;
 
-            $invoiceNo = 'INV-' . str_pad($nextId, 5, '0', STR_PAD_LEFT);
+            $billNo = 'INV-' . str_pad($nextId, 5, '0', STR_PAD_LEFT);
             
             $sale = Sales::create([
-                'invoice_no' => $invoiceNo, // auto invoice no
+                'bill_no' => $billNo, // auto bill no
                 'mode_of_payment' => $request->mode_of_payment,
                 'payment_details' => $request->payment_details,
                 'description' => $request->description,
                 'discount' => $request->discount ?? 0,
+                'tax' => $request->tax ?? 0,
+                'customer_name' => $request->customer_name ?? null,
             ]);
 
             /* ==========================
@@ -86,6 +91,14 @@ class SalesController extends Controller
                 ->back()
                 ->with('error', 'Something went wrong');
         }
+    }
+
+    public function bill($id)
+    {
+        $about = Company::first();
+        $sale = Sales::all()->where('id', $id)->first();
+        $sale_items = SalesProduct::with('product')->where('sale_id', $id)->get();
+        return view('sales.bill', compact('sale', 'about', 'sale_items'), ['currentPage' => 'sales']);
     }
 
 }

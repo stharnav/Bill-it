@@ -98,6 +98,9 @@
     <div class="col-md-4">
         <textarea name="payment_details" id="" class="form-control" placeholder="Payment Details"></textarea>
     </div>
+    <div class="col">
+        <input type="text" name="customer_name" class="form-control" placeholder="Customer Name">
+    </div>
 </div>
 
 </div>

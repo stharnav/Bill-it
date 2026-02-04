@@ -20,6 +20,8 @@ Route::middleware(['auth'])->group(function(){
         return view('sales.new-sales', ['currentPage' => 'new-sales']);
     })->name('sales.new-sales');
 
+    Route::get('/bill/{id}', [SalesController::class, 'bill'])->name('sales.bill');
+
     Route::get('/products', [ProductController::class, 'index'])->name('products.product');
     Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
     Route::get('/add-product', [ProductController::class, 'fetchCategories'])->name('products.add-product');

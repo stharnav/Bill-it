@@ -53,7 +53,7 @@
                     <td>{{ $sale->created_at }}</td>
                     <td>{{ $sale->mode_of_payment == 1 ? 'Cash' : ($sale->mode_of_payment == 2 ? 'Fonepay' : 'Other') }}</td>
                     <td>{{ $sale->payment_details == '' ? 'N/A' : $sale->payment_details }}</td>
-                    <td></td>
+                    <td><button class="btn btn-primary" id="{{ $sale->id }}" onclick="window.location='{{ route('sales.bill', ['id' => $sale->id]) }}'">View</button></td>
                   </tr>
                   @endforeach
                   </tbody>

@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->integer('invoice_no')->unique();
+            $table->integer('bill_no')->unique();
             $table->text('description')->nullable();
             $table->integer('mode_of_payment')->nullable();
             $table->text('payment_details')->nullable();
             $table->decimal('discount', 15, 2)->default(0);
+            $table->decimal('tax', 15, 2)->default(0);
+            $table->string('customer_name')->nullable();
             $table->timestamps();
         });
     }

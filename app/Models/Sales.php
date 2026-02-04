@@ -9,10 +9,12 @@ class Sales extends Model
     protected $table = 'sales';
 
     protected $fillable = [
-        'invoice_no',
+        'bill_no',
         'description',
         'mode_of_payment',
         'payment_details',
         'discount',
+        'tax',
+        'customer_name',
     ];
 }

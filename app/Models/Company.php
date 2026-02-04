@@ -17,5 +17,12 @@ class Company extends Model
         'company_pan',
         'company_registration_no',
         'company_website',
+        'currency',
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
 }

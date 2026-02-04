@@ -25,6 +25,7 @@ class CompanyController extends Controller
             'company_pan' => 'nullable|string|max:50',
             'company_registration_no' => 'nullable|string|max:100',
             'company_website' => 'nullable|max:255',
+            'currency' => 'nullable|string|max:10',
         ]);
     
         $company = Company::create($validatedData);
@@ -45,6 +46,7 @@ class CompanyController extends Controller
             'company_pan' => 'nullable|string|max:50',
             'company_registration_no' => 'nullable|string|max:100',
             'company_website' => 'nullable|max:255',
+            'currency' => 'nullable|string|max:10',
         ]);
     
         $company = Company::findOrFail($id);

@@ -20,4 +20,15 @@ class SalesProduct extends Model
     {
         return $this->belongsTo(Sales::class);
     }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
 }

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('company_pan')->nullable();
             $table->string('company_registration_no')->nullable();
             $table->string('company_website')->nullable();
+            $table->string('currency')->nullable();
             $table->timestamps();
         });
     }

@@ -89,6 +89,12 @@
                         </div>
                       </div>
                       <div class="form-group row">
+                        <label for="inputSkills" class="col-sm-2 col-form-label">Currency</label>
+                        <div class="col-sm-10">
+                          <input type="text" class="form-control" id="inputSkills" placeholder="Currency" name="currency" value="{{$about->currency ?? ''}}">
+                        </div>
+                      </div>
+                      <div class="form-group row">
                         <div class="offset-sm-2 col-sm-10">
                           <button type="submit" class="btn btn-primary">Save Changes</button>
                         </div>
