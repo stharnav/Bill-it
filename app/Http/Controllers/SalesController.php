@@ -32,7 +32,7 @@ class SalesController extends Controller
 
     public function store(Request $request)
     {
-        
+
         $request->validate([
             'mode_of_payment' => 'required',
             'products' => 'required|array',
@@ -41,7 +41,9 @@ class SalesController extends Controller
             'discount' => 'nullable|numeric',
             'tax' => 'nullable|numeric',
             'customer_name' => 'nullable|string',
+            'is_refund' => 'required|boolean',
         ]);
+
 
         DB::beginTransaction();
 
@@ -54,6 +56,14 @@ class SalesController extends Controller
             $nextId = $lastSale ? $lastSale->id + 1 : 1;
 
             $billNo = 'INV-' . str_pad($nextId, 5, '0', STR_PAD_LEFT);
+
+            if($request->is_refund == 0){
+                $billNo = 'INV-' . str_pad($nextId, 5, '0', STR_PAD_LEFT);
+                $refund = 0;
+            } else {
+                $billNo = 'REF-' . str_pad($nextId, 5, '0', STR_PAD_LEFT);
+                $refund = 1;
+            }
             
             $sale = Sales::create([
                 'bill_no' => $billNo, // auto bill no
@@ -63,6 +73,7 @@ class SalesController extends Controller
                 'discount' => $request->discount ?? 0,
                 'tax' => $request->tax ?? 0,
                 'customer_name' => $request->customer_name ?? null,
+                'is_refund' => $refund,
             ]);
 
             /* ==========================
@@ -99,6 +110,13 @@ class SalesController extends Controller
         $sale = Sales::all()->where('id', $id)->first();
         $sale_items = SalesProduct::with('product')->where('sale_id', $id)->get();
         return view('sales.bill', compact('sale', 'about', 'sale_items'), ['currentPage' => 'sales']);
+    }
+
+    public function refund($id)
+    {
+        $sale = Sales::all()->where('id', $id)->first();
+        $sale_items = SalesProduct::with('product')->where('sale_id', $id)->get();
+        return view('sales.refund', compact('sale', 'sale_items'), ['currentPage' => 'sales']);
     }
 
 }

@@ -16,5 +16,6 @@ class Sales extends Model
         'discount',
         'tax',
         'customer_name',
+        'is_refund',
     ];
 }

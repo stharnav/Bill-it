@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('discount', 15, 2)->default(0);
             $table->decimal('tax', 15, 2)->default(0);
             $table->string('customer_name')->nullable();
+            $table->boolean('is_refund')->default(false);
             $table->timestamps();
         });
     }

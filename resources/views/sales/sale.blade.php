@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Sales</title>
     
     @include('layouts.header')
 </head>
@@ -41,7 +41,7 @@
                     <th>Invoice No</th>
                     <th>Date</th>
                     <th>Mode of Payment</th>
-                    <th>Payment Details</th>
+                    <th>Customer Name</th>
                     <th>Action</th>
                   </tr>
                   </thead>
@@ -49,11 +49,14 @@
                   @foreach($sales as $sale)
                   <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $sale->invoice_no }}</td>
+                    <td>{{ $sale->bill_no }}</td>
                     <td>{{ $sale->created_at }}</td>
                     <td>{{ $sale->mode_of_payment == 1 ? 'Cash' : ($sale->mode_of_payment == 2 ? 'Fonepay' : 'Other') }}</td>
-                    <td>{{ $sale->payment_details == '' ? 'N/A' : $sale->payment_details }}</td>
-                    <td><button class="btn btn-primary" id="{{ $sale->id }}" onclick="window.location='{{ route('sales.bill', ['id' => $sale->id]) }}'">View</button></td>
+                    <td>{{ $sale->customer_name == '' ? 'N/A' : $sale->customer_name }}</td>
+                    <td>
+                      <button class="btn btn-primary" id="{{ $sale->id }}" onclick="window.location='{{ route('sales.bill', ['id' => $sale->id]) }}'">View</button>
+                      <button class="btn btn-warning" onclick="window.location='{{ route('sales.refund', ['id' => $sale->id]) }}'">Refund request</button>
+                    </td>
                   </tr>
                   @endforeach
                   </tbody>
@@ -63,7 +66,7 @@
                     <th>Invoice No</th>
                     <th>Date</th>
                     <th>Mode of Payment</th>
-                    <th>Payment Details</th>
+                    <th>Customer Name</th>
                     <th>Action</th>
                   </tr>
                   </tfoot>
@@ -78,5 +81,7 @@
 @include('layouts.footer')
 @include('layouts.script')
 <!-- @include('layouts.datatable-script') -->
+
+
 </body>
 </html>

@@ -58,33 +58,42 @@
       <div class="container-fluid">
         <div class="bill p-3 mb-3">
               <!-- title row -->
-              <div class="row">
-                <div class="col-12">
-                  <h4>
+              <div class="row ">
+                <div class="col-12 d-flex align-items-center justify-content-center flex-column">
+                  <h2>
                     <i class="fas fa-globe"></i> {{ $about->company_name }}
-                    <small class="float-right">Date: {{ now()->format('Y/m/d') }}</small>
-                  </h4>
+                  </h2>
+                    {{ $about->company_website }}<br>
+                    {{ $about->company_address}}<br>
+                    {{ $about->company_phone_no }}<br>
                 </div>
                 <!-- /.col -->
               </div>
               <!-- info row -->
               <div class="row bill-info">
-                <div class="col-sm-4 bill-col">
+                <div class="col-sm-4 bill-col ">
                   <address>
-                    {{ $about->company_website }}<br>
-                    {{@$about->company_address}}<br>
-                    <b>Phone:</b> {{ $about->company_phone_no }}<br>
-                    <b>Email:</b> {{ $about->company_email }}<br>
-                    <b>PAN:</b> {{ $about->company_pan }}<br>
-                    <b>Registration No:</b> {{ $about->company_registration_no }}
+                    @if ($about->company_email)
+                      <b>Email:</b> {{ $about->company_email }}<br>
+                    @endif
+                    @if ($about->company_pan)
+                      <b>PAN:</b> {{ $about->company_pan }}<br>
+                    @endif
+                    @if ($about->company_registration_no)
+                      <b>Registration No:</b> {{ $about->company_registration_no }}<br>
+                    @endif
+                    <b>Payment Due:</b>{{@$sale->created_at}}<br>
+                    <b>Printed Date:</b>{{ now()->format('Y/m/d') }}<br>
                   </address>
                 </div>
                 <!-- /.col -->
                 <div class="col-sm-4">
                   <b>Employee name:</b> {{ Auth::user()->name }}<br>
-                  <b>Customer Name:</b> {{@$sale->customer_name}}<br>
+                  @if ($sale->customer_name)
+                    <b>Customer Name:</b> {{@$sale->customer_name}}<br>
+                  @endif
                   <b>Bill No:</b> {{@$sale->bill_no}}<br>
-                  <b>Payment Due:</b>{{@$sale->created_at}}<br>
+                  
                   <b>Payment Method:</b> {{ @$sale->mode_of_payment == 1 ? 'Cash' : (@$sale->mode_of_payment == 2 ? 'Fonepay' : (@$sale->mode_of_payment == 3 ? 'Credit Card' : (@$sale->mode_of_payment == 4 ? 'Debit Card' : 'Bank Transfer') ))}}<br>
                 </div>
                 <!-- /.col -->

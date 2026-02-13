@@ -9,9 +9,7 @@ use App\Http\Controllers\SalesController;
 
 Route::middleware(['auth'])->group(function(){
 
-    Route::get('/', function () {
-        return view('welcome', ['currentPage' => 'home']);
-    });
+    Route::get('/', [UserController::class, 'index'])->name('home');
 
     Route::get('/sales', [SalesController::class, 'index'] )->name('sales.sale');
     Route::get('/sales/search', [SalesController::class, 'search'])->name('sales.search');
@@ -19,6 +17,8 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/new-sales', function () {
         return view('sales.new-sales', ['currentPage' => 'new-sales']);
     })->name('sales.new-sales');
+    Route::get('/sales/refund/{id}', [SalesController::class, 'refund'])->name('sales.refund');
+    Route::post('/sales/new-refund', [SalesController::class, 'processRefund'])->name('sales.processRefund');
 
     Route::get('/bill/{id}', [SalesController::class, 'bill'])->name('sales.bill');
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Sale</title>
+    <title>Refund Request</title>
     @include('layouts.header')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -31,86 +31,82 @@
 
 <div class="card card-primary">
 <div class="card-header">
-<h3 class="card-title">Add Sale</h3>
+<h3 class="card-title">Refund Request</h3>
 </div>
 
 <div class="card-body">
-
-<!-- PRODUCT INPUT -->
-<div class="row mb-3 position-relative">
-    <div class="col-md-4">
-        <input type="text" id="product_name" class="form-control" placeholder="Product Name" autocomplete="off">
-<input type="hidden" id="product_id">
-
-<ul id="productList" class="list-group position-absolute w-100" style="z-index:1000;"></ul>
-
-    </div>
-
-    <div class="col-md-2">
-        <input type="number" id="price" class="form-control" placeholder="Price" readonly>
-    </div>
-
-    <div class="col-md-2">
-        <input type="number" id="qty" class="form-control" value="1" min="1">
-    </div>
-
-    <div class="col-md-2">
-        <button type="button" class="btn btn-primary" id="addProduct">Add</button>
-    </div>
-</div>
+<h3>{{ $sale->bill_no }}</h3>
 
 <form method="POST" action="{{ route('sales.store') }}">
-@csrf
+<div class="row mb-3 position-relative border">
 
 
+    
+    @csrf
+    <div class="col border">
+         <!-- REFUND TABLE -->
+        <table class="table table-bordered" id="saleTable">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($sale_items as $item)
+                <tr>
+                    <td>
+                        {{ $item->product->name }}
+                        <input type="hidden" name="products[{{ $item->product_id }}][id]" value="{{ $item->product_id }}">
+                    </td>
 
-<!-- SALE TABLE -->
-<table class="table table-bordered" id="saleTable">
-    <thead>
-        <tr>
-            <th>Product</th>
-            <th>Price</th>
-            <th>Qty</th>
-            <th>Total</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+                    <td>
+                        {{ $item->price }}
+                        <input type="hidden" name="products[{{ $item->product_id }}][price]" value="{{ $item->price }}">
+                    </td>
 
-<!-- PAYMENT MODE -->
-<div class="row mt-3">
-    <div class="col-md-2">
-        <select name="mode_of_payment" class="form-control" required>
-            <option value="1">Cash</option>
-            <option value="2">Fonepay</option>
-            <option value="3">Credit Card</option>
-            <option value="4">Debit Card</option>
-            <option value="5">Bank Transfer</option>
-        </select>
-    </div>
-    <div class="col-md-2">
-        <input type="number" name="discount" class="form-control" placeholder="Discount (%)" min="0" max="100">
-    </div>
-    <div class="col-md-4">
-        <textarea name="description" id="" class="form-control" placeholder="Description"></textarea>
-    </div>
-    <div class="col-md-4">
-        <textarea name="payment_details" id="" class="form-control" placeholder="Payment Details"></textarea>
+                    <td>
+                        <input type="number"
+                            class="form-control qty-input"
+                            name="products[{{ $item->product_id }}][qty]"
+                            value="{{ $item->quantity }}"
+                            min="1"
+                            data-price="{{ $item->price }}">
+                    </td>
+
+                    <td class="row-total">{{ $item->quantity * $item->price }}</td>
+
+                    <td>
+                        <button type="button" class="btn btn-danger btn-sm removeRow">Remove Product</button>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
     <div class="col">
-        <input type="text" name="customer_name" class="form-control" placeholder="Customer Name">
+        <b>Customer name: </b>{{ $sale->customer_name }}
+        <br>
+        <textarea name="description" class="form-control" placeholder="Reason for refund"></textarea>
+        <input type="hidden" name="is_refund" value="1">
+        <input type="hidden" name="mode_of_payment" value="{{ $sale->mode_of_payment }}">
+        <input type="hidden" name="payment_details" value="{{ $sale->payment_details }}">
+        <input type="hidden" name="discount" value="{{ $sale->discount }}">
+        <input type="hidden" name="tax" value="{{ $sale->tax }}">
+        <input type="hidden" name="customer_name" value="{{ $sale->customer_name }}">
     </div>
-</div>
-    <input type="hidden" name="is_refund" value="0">
-</div>
 
-<div class="card-footer">
-<button type="submit" class="btn btn-success">Save Sale</button>
-</div>
 
+    <div class="card-footer">
+    <button type="submit" class="btn btn-success">Save Refund</button>
+    </div>
+
+    
+</div>
 </form>
-</div>
 
 </div>
 </section>

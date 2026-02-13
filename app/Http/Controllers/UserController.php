@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function index(){
+        $saleCount = \App\Models\Sales::where('is_refund', 0)->count();
+        $productCount = \App\Models\Product::count();
+        $categoryCount = \App\Models\Category::count();
+        $refundCount = \App\Models\Sales::where('is_refund', 1)->count();
+        return view('welcome', compact('saleCount', 'productCount', 'categoryCount', 'refundCount'), ['currentPage' => 'home']);
+    }
+
     public function login(Request $request)
     {
         $credentials = $request->only('username', 'password');
