@@ -69,11 +69,10 @@
                     </td>
 
                     <td>
-                        <input type="number"
-                            class="form-control qty-input"
+                        {{ $item->quantity }}
+                        <input type="hidden"
                             name="products[{{ $item->product_id }}][qty]"
                             value="{{ $item->quantity }}"
-                            min="1"
                             data-price="{{ $item->price }}">
                     </td>
 

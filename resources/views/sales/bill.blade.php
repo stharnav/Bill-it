@@ -47,28 +47,43 @@
               <li class="breadcrumb-item active">Bill</li>
             </ol>
           </div><!-- /.col -->
+          <a href="javascript:window.print()" class="btn btn-default">
+              <i class="fas fa-print"></i> Print
+          </a>
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
-    <a href="javascript:window.print()" class="btn btn-default">
-        <i class="fas fa-print"></i> Print
-    </a>
+    
     <!-- /.content-header -->
     <section class="content" id="print-area">
       <div class="container-fluid">
         <div class="bill p-3 mb-3">
               <!-- title row -->
-              <div class="row ">
+              @if ($about->company_name) 
+              <div class="row">
                 <div class="col-12 d-flex align-items-center justify-content-center flex-column">
                   <h2>
                     <i class="fas fa-globe"></i> {{ $about->company_name }}
                   </h2>
-                    {{ $about->company_website }}<br>
-                    {{ $about->company_address}}<br>
-                    {{ $about->company_phone_no }}<br>
                 </div>
                 <!-- /.col -->
               </div>
+              @endif
+              <div class="row">
+                  <div class="col  d-flex align-items-center justify-content-center flex-column">
+                    {{ $about->company_website }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col  d-flex align-items-center justify-content-center flex-column">
+                    {{ $about->company_address}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col  d-flex align-items-center justify-content-center flex-column">
+                    {{ $about->company_phone_no }}
+                  </div>
+                </div>
               <!-- info row -->
               <div class="row bill-info">
                 <div class="col-sm-4 bill-col ">
@@ -108,7 +123,7 @@
                     <tr>
                       <th>Product</th>
                       <th>Quantity</th>
-                      <th>Subtotal</th>
+                      <th>Price</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -152,12 +167,17 @@
                         <th>Discount({{number_format($sale->discount ?? 0, 0)}}%)</th>
                         <td>{{@$about->currency}} {{ number_format($subtotal * ($sale->discount ?? 0) / 100, 2) }}</td>
                       </tr>
-                      <tr>
+                      <!-- <tr>
                         <th>Shipping:</th>
                         <td>{{@$about->currency}} 5.80</td>
-                      </tr>
+                      </tr> -->
                       <tr>
-                        <th>Total:</th>
+                        <th>
+                          @if($sale->is_refund == 0)
+                          <b>Total:</b> 
+                          @else 
+                          <b>Refund Amount:</b>
+                           @endif</th>
                         <td>{{@$about->currency}} {{ number_format($subtotal + ($subtotal * ($sale->tax ?? 0) / 100) - ($subtotal * ($sale->discount ?? 0) / 100), 2) }}</td>
                       </tr>
                     </table>
@@ -174,6 +194,15 @@
 </div>
 @include('layouts.footer')
 @include('layouts.script')
+
+<script>
+  window.onload = () => {
+    setTimeout(() => {
+      window.print();
+    }, 500);
+    
+  };
+</script>
 <!-- @include('layouts.datatable-script') -->
 </body>
 </html>
