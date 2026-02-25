@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Bill it | {{ Auth::user()->name }}</title>
     @include('layouts.header')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -43,7 +43,7 @@
           <div class="col-md-6">
             <div class="card card-primary">     
               <div class="m-2 p-2">
-                      <form class="form-horizontal" method="post" action="{{ route('profile.update') }}">
+                      <form class="form-horizontal" method="post" enctype="multipart/form-data" action="{{ route('profile.update') }}">
                         @csrf
                         <div class="form-group row">
                           <label for="inputName" class="col-sm-2 col-form-label">Name</label>
@@ -61,6 +61,25 @@
                           <label for="inputName2" class="col-sm-2 col-form-label">Username</label>
                           <div class="col-sm-10">
                             <input type="text" class="form-control" id="inputName2" placeholder="Username" name="username" value="{{ Auth::user()->username }}">
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label for="inputName2" class="col-sm-2 col-form-label">Profile</label>
+                          <div class="col-sm-10">
+                            <div class="row">
+                              <div class="col-md-2 border rounded">
+                                 @if (Auth::user()->user_logo)
+                                  <img src="{{ asset('uploads/user/' . Auth::user()->user_logo) }}" width="100" height="100" alt="User Logo">
+                                @else
+                                  <i class="fas fa-user"></i>
+                                @endif
+                              </div>
+                              <div class="col">
+                                <input type="file" class="" id="inputName2" name="user_logo">
+                              </div>
+                            </div>
+                            
+                           
                           </div>
                         </div>
                         

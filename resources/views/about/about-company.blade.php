@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Company</title>
     @include('layouts.header')
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -34,11 +34,15 @@
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
+        @elseif(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
         @endif
         <div class="card card-primary">
               
             <div class="m-2 p-2">
-                    <form class="form-horizontal" method="POST" action="{{ route('company.update', $about->id ?? '') }}">
+                    <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{ route('company.update', $about->id ?? '') }}">
                       @csrf
                       <div class="form-group row">
                         <label for="inputName" class="col-sm-2 col-form-label">Company Name</label>
@@ -92,6 +96,12 @@
                         <label for="inputSkills" class="col-sm-2 col-form-label">Currency</label>
                         <div class="col-sm-10">
                           <input type="text" class="form-control" id="inputSkills" placeholder="Currency" name="currency" value="{{$about->currency ?? ''}}">
+                        </div>
+                      </div>
+                       <div class="form-group row">
+                        <label for="inputSkills" class="col-sm-2 col-form-label">Logo</label>
+                        <div class="col-sm-10">
+                          <input type="file" class="form-control" id="inputSkills" name="company_logo">
                         </div>
                       </div>
                       <div class="form-group row">

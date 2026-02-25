@@ -44,6 +44,19 @@ class UserController extends Controller
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->username = $request->input('username');
+
+        if ($request->hasFile('user_logo')) {
+            if ($user->user_logo && file_exists(public_path('uploads/user/' . $user->user_logo))) {
+                unlink(public_path('uploads/user/' . $user->user_logo));
+            }
+
+            $logo = $request->file('user_logo');
+            $logoName = time() . '_' . $logo->getClientOriginalName();
+            $logo->move(public_path('uploads/user'), $logoName);
+
+            $user->user_logo = $logoName;
+        }
+
         $user->save();
 
         return redirect()->back()->with('success', 'Profile updated successfully.');

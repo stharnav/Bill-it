@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Bill {{ $sale->bill_no }}</title>
     
     @include('layouts.header')
 
@@ -63,7 +63,12 @@
               <div class="row">
                 <div class="col-12 d-flex align-items-center justify-content-center flex-column">
                   <h2>
-                    <i class="fas fa-globe"></i> {{ $about->company_name }}
+                    @if ($about->company_logo)
+                      <img src="{{ asset('uploads/company/' . $about->company_logo) }}" width="100" height="100" alt="Company Logo">
+                    @else if($about->company_name)
+                      <i class="fas fa-globe"></i>
+                    @endif
+                    {{ $about->company_name }}
                   </h2>
                 </div>
                 <!-- /.col -->
@@ -123,7 +128,7 @@
                     <tr>
                       <th>Product</th>
                       <th>Quantity</th>
-                      <th>Price</th>
+                      <th>Unit Price</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -158,15 +163,19 @@
                         <th style="width:50%">Subtotal:</th>
                         <td>{{@$about->currency}} {{$subtotal}}</td>
                       </tr>
+                      @if ($sale->tax > 0)
                       <tr>
                         <th>Tax ({{number_format($sale->tax ?? 0, 0)}}%)</th>
                         <td>{{@$about->currency}} {{ number_format($subtotal * ($sale->tax ?? 0) / 100, 2) }}
                         </td>
                       </tr>
+                      @endif
+                      @if ($sale->discount > 0)
                       <tr>
                         <th>Discount({{number_format($sale->discount ?? 0, 0)}}%)</th>
                         <td>{{@$about->currency}} {{ number_format($subtotal * ($sale->discount ?? 0) / 100, 2) }}</td>
                       </tr>
+                      @endif
                       <!-- <tr>
                         <th>Shipping:</th>
                         <td>{{@$about->currency}} 5.80</td>

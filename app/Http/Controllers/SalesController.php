@@ -92,8 +92,8 @@ class SalesController extends Controller
             DB::commit();
 
             return redirect()
-                ->back()
-                ->with('success', 'Sale saved successfully');
+                ->route('sales.bill', $sale->id)
+                ->with('success', 'Sale created successfully');
 
         } catch (\Exception $e) {
             dd($e->getMessage());

@@ -18,6 +18,7 @@ class Company extends Model
         'company_registration_no',
         'company_website',
         'currency',
+        'company_logo',
     ];
 
     protected $hidden = [
