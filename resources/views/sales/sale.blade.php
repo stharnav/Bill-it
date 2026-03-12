@@ -55,7 +55,11 @@
                     <td>{{ $sale->customer_name == '' ? 'N/A' : $sale->customer_name }}</td>
                     <td>
                       <button class="btn btn-primary" id="{{ $sale->id }}" onclick="window.location='{{ route('sales.bill', ['id' => $sale->id]) }}'">View</button>
-                      <button class="btn btn-warning" onclick="window.location='{{ route('sales.refund', ['id' => $sale->id]) }}'">Refund request</button>
+                      @if($sale->is_refund)
+                      <button class="btn btn-warning" onclick="window.location='{{ route('sales.refund', ['id' => $sale->id]) }}'" disabled>Refund</button>
+                      @else
+                      <button class="btn btn-warning" onclick="window.location='{{ route('sales.refund', ['id' => $sale->id]) }}'">Refund</button>
+                      @endif
                     </td>
                   </tr>
                   @endforeach

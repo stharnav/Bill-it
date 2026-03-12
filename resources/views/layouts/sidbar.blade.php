@@ -83,7 +83,7 @@
                with font-awesome or any other icon font library -->
           <li class="nav-item">
             <a href="/" class="nav-link {{ $currentPage === 'home' ? 'active' : '' }}">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-home"></i>
               <p>
                 Dashboard
               </p>
@@ -92,7 +92,7 @@
 
            <li class="nav-item">
             <a href="/sales" class="nav-link {{ $currentPage === 'sales' ? 'active' : '' }}">
-              <i class="nav-icon fas fa-th"></i>
+              <i class="nav-icon fas fa-shopping-cart"></i>
               <p>
                 Sales
               </p>
@@ -110,13 +110,13 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="/products" class="nav-link {{ $currentPage === 'products' ? 'active' : '' }}">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="far fa-eye nav-icon"></i>
                   <p>View Products</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="/add-product" class="nav-link {{ $currentPage === 'add-product' ? 'active' : '' }}">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="far fa-plus-square nav-icon"></i>
                   <p>Add New Product</p>
                 </a>
               </li>
@@ -125,7 +125,7 @@
 
           <li class="nav-item {{ $currentPage === 'sales-report' ? 'menu-open' : '' }}">
             <a href="/sales-report" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
+              <i class="nav-icon fas fa-pen-nib"></i>
               <p>
                 Reports
                 <i class="right fas fa-angle-left"></i>
@@ -134,7 +134,7 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="/sales-report" class="nav-link {{ $currentPage === 'sales-report' ? 'active' : '' }}">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fas fa-book-open nav-icon"></i>
                   <p>Sales Report</p>
                 </a>
               </li>
@@ -152,13 +152,13 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="/category" class="nav-link {{ $currentPage === 'category' ? 'active' : '' }}">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="far fa-eye nav-icon"></i>
                   <p>View Categories</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="{{route('categories.add-category')}}" class="nav-link {{ $currentPage === 'add-category' ? 'active' : '' }}">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="far fa-plus-square nav-icon"></i>
                   <p>Add New Category</p>
                 </a>
               </li>
@@ -167,7 +167,7 @@
 
           <li class="nav-item {{ $currentPage === 'about-me' || $currentPage === 'about-company' ? 'menu-open' : '' }}">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
+              <i class="nav-icon fas fa-cog"></i>
               <p>
                   About
                 <i class="right fas fa-angle-left"></i>
@@ -176,13 +176,13 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="/about-me" class="nav-link {{ $currentPage === 'about-me' ? 'active' : '' }}">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="far fa-address-card nav-icon"></i>
                   <p>About Me</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="/about-company" class="nav-link {{ $currentPage === 'about-company' ? 'active' : '' }}">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="far fa-building nav-icon"></i>
                   <p>About Company</p>
                 </a>
               </li>
@@ -194,7 +194,7 @@
       </nav>
       <form action="{{ route('logout') }}" method="post">
         @csrf
-        <button type="submit" class="btn btn-danger btn-block mb-3">Logout</button>
+        <button type="submit" class="btn btn-danger btn-block mb-3"><i class="fas fa-sign-out-alt nav-icon"></i>&nbsp;Logout</button>
       </form>
       <!-- /.sidebar-menu -->
     </div>
