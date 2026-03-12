@@ -123,6 +123,24 @@
             </ul>
           </li>
 
+          <li class="nav-item {{ $currentPage === 'sales-report' ? 'menu-open' : '' }}">
+            <a href="/sales-report" class="nav-link">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                Reports
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/sales-report" class="nav-link {{ $currentPage === 'sales-report' ? 'active' : '' }}">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Sales Report</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
            <li class="nav-item {{ $currentPage === 'category' || $currentPage === 'add-category' ? 'menu-open' : '' }}">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>

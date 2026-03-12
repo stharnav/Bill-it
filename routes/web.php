@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\SalesReportController;
 
 Route::middleware(['auth'])->group(function(){
 
@@ -42,6 +43,8 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/category/{id}/editCategory', [CategoryController::class, 'edit'])->name('category.edit');
     Route::put('/category/{id}', [CategoryController::class, 'update'])->name('category.update');
 
+    Route::get('/sales-report', [SalesReportController::class, 'index'])->name('reports.sales-report');
+    Route::get('/sales-report/search', [SalesReportController::class, 'search'])->name('reports.sales-report.search');
 
     Route::get('/about-me', function () {
         return view('about.about-me', ['currentPage' => 'about-me']);
