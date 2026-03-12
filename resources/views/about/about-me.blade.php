@@ -68,7 +68,7 @@
                           <div class="col-sm-10">
                             <div class="row">
                               <div class="col-md-2 border rounded">
-                                 @if (Auth::user()->user_logo)
+                                @if (Auth::user()->user_logo)
                                   <img src="{{ asset('uploads/user/' . Auth::user()->user_logo) }}" width="100" height="100" alt="User Logo">
                                 @else
                                   <i class="fas fa-user"></i>

@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     public function index(){
-        $saleCount = \App\Models\Sales::where('is_refund', 0)->count();
+        $saleCount = \App\Models\Sales::where('is_refund', 0)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->count();
         $productCount = \App\Models\Product::count();
         $categoryCount = \App\Models\Category::count();
-        $refundCount = \App\Models\Sales::where('is_refund', 1)->count();
+        $refundCount = \App\Models\Sales::where('is_refund', 1)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->count();
         return view('welcome', compact('saleCount', 'productCount', 'categoryCount', 'refundCount'), ['currentPage' => 'home']);
     }
 

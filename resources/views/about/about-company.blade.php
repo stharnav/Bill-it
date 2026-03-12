@@ -100,8 +100,15 @@
                       </div>
                        <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">Logo</label>
-                        <div class="col-sm-10">
-                          <input type="file" class="form-control" id="inputSkills" name="company_logo">
+                        <div class="border rounded">
+                          @if ($about->company_logo)
+                            <img src="{{ asset('uploads/company/' . $about->company_logo) }}" width="100" height="100" alt="User Logo">
+                          @else
+                          <i class="fas fa-user"></i>
+                          @endif
+                        </div>
+                        <div class="col-sm-8">
+                          <input type="file" class="" id="inputSkills" name="company_logo">
                         </div>
                       </div>
                       <div class="form-group row">
