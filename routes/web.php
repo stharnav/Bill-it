@@ -55,7 +55,10 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/company/store', [CompanyController::class, 'store'])->name('company.store');
     Route::post('/company/update/{id}', [CompanyController::class, 'update'])->name('company.update');
     Route::get('/about-users', [UserController::class, 'index'])->name('user.user');
-    Route::post('/user/store', [UserController::class, 'store'])->name('user.add-user');
+    Route::get('/add-user', function () {
+        return view('about.add-user', ['currentPage' => 'add-user']);
+    })->name('user.add-user');
+    Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
 
 });
 

@@ -38,6 +38,31 @@ class UserController extends Controller
         return redirect('/login');
     }
 
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'username' => 'required|string|max:255',
+            'user_type' => 'required|integer',
+        ]);
+
+        $password = $request->input('username') . '123';
+        try{
+            $user = new User();
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+            $user->username = $request->input('username');
+            $user->password = Hash::make($password);
+            $user->user_type = $request->input('user_type');
+            $user->save();
+
+            return redirect()->back()->with('success', 'User created successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred while creating the user');
+        }
+    }
+
     public function updateProfile(Request $request)
     {
         $user = Auth::user();
@@ -82,24 +107,5 @@ class UserController extends Controller
     {
         $users = User::all();
         return view('about.about-users', compact('users'), ['currentPage' => 'about-users']);
-    }
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'username' => 'required|string|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        $user = new User();
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->username = $request->input('username');
-        $user->password = Hash::make($request->input('password'));
-        $user->save();
-
-        return redirect()->back()->with('success', 'User created successfully.');
     }
 }
