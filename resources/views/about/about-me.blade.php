@@ -71,7 +71,7 @@
                                 @if (Auth::user()->user_logo)
                                   <img src="{{ asset('uploads/user/' . Auth::user()->user_logo) }}" width="100" height="100" alt="User Logo">
                                 @else
-                                  <i class="fas fa-user"></i>
+                                  <img src="https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg" alt="image" width="100" height="100" class="rounded">
                                 @endif
                               </div>
                               <div class="col">

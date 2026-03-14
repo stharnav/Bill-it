@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User</title>
+    <title>Logs</title>
     
     @include('layouts.header')
 </head>
@@ -19,16 +19,15 @@
           <div class="container-fluid">
             <div class="row mb-2">
               <div class="col-sm-6">
-                <h1 class="m-0">Users</h1>
+                <h1 class="m-0">Logs</h1>
               </div>
               <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                   <li class="breadcrumb-item"><a href="#">Home</a></li>
-                  <li class="breadcrumb-item active">Users</li>
+                  <li class="breadcrumb-item active">Logs</li>
                 </ol>
               </div>
             </div>
-            <button onclick="window.location.href='{{ route('user.add-user') }}'" class="btn btn-primary">Add User</button>
           </div>
         </div>
         
@@ -46,35 +45,21 @@
                             <thead>
                             <tr>
                                 <th>Rank</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Username</th>
-                                <th>User Type</th>
-                                <th>Action</th>
+                                <th>Description</th>
+                                <th>Timestamp</th>
                             </tr>
                             </thead>
 
                             <tbody>
-                                @forelse ($users as $user)
+                                @forelse ($logs as $log)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>
-                                            @if ($user->user_logo)
-                                                <img src="{{ asset('uploads/user/' . $user->user_logo) }}" alt="User Logo" class="img-circle" width="50" height="50">&nbsp;
-                                            @endif
-                                            {{ $user->name }}
-                                        </td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ $user->username }}</td>
-                                        <td>{{ $user->user_type == 0 ? 'Admin' : 'User' }}</td>
-                                        <td>
-                                            
-                                            <a href="#" class="btn btn-sm btn-danger">Delete</a>
-                                        </td>
+                                        <td>{{ $log->user->name }} {{ $log->description }}</td>
+                                        <td>{{ $log->created_at }}</td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="text-center">No users found</td>
+                                        <td colspan="4" class="text-center">No logs found</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -82,11 +67,8 @@
                             <tfoot>
                             <tr>
                                 <th>Rank</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Username</th>
-                                <th>User Type</th>
-                                <th>Action</th>
+                                <th>Descrption</th>
+                                <th>Timestamp</th>
                             </tr>
                             </tfoot>
                         </table>

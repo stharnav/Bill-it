@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Log;
 
 class CategoryController extends Controller
 {   
@@ -23,9 +24,14 @@ class CategoryController extends Controller
 
         $category = Category::create($validated);
 
-         return redirect()
-        ->route('categories.add-category')
-        ->with('success', 'Category created successfully!');
+        Log::create([
+            'user_id' => auth()->id(),
+            'description' => 'created category: ' . $category->name,
+        ]);
+
+        return redirect()
+            ->route('categories.add-category')
+            ->with('success', 'Category created successfully!');
     }
 
     public function edit($id)
@@ -44,6 +50,11 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $category->update($request->all());
         $currentPage = 'category';
+
+        Log::create([
+            'user_id' => auth()->id(),
+            'description' => 'updated category: ' . $category->name,
+        ]);
 
         return redirect()->route('categories.category')
         ->with('currentPage', 'categories')

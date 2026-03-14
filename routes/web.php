@@ -7,6 +7,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SalesReportController;
+use App\Http\Controllers\LogController;
 
 Route::middleware(['auth'])->group(function(){
 
@@ -59,6 +60,7 @@ Route::middleware(['auth'])->group(function(){
         return view('about.add-user', ['currentPage' => 'add-user']);
     })->name('user.add-user');
     Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
+    Route::get('/about-logs', [LogController::class, 'index'])->name('about.logs');
 
 });
 

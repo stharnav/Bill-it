@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Log;
 
 class UserController extends Controller
 {
@@ -22,12 +23,19 @@ class UserController extends Controller
         $credentials = $request->only('username', 'password');
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            
+            Log::create([
+                'user_id' => auth()->id(),
+                'description' => 'logged in',
+            ]);
+
             return redirect('/');
         }
 
         return back()->withErrors([
             'username' => 'The provided credentials do not match our records.',
         ]);
+
     }
 
     public function logout(Request $request)
@@ -57,6 +65,10 @@ class UserController extends Controller
             $user->user_type = $request->input('user_type');
             $user->save();
 
+                Log::create([
+                    'user_id' => auth()->id(),
+                    'description' => 'created user: ' . $user->name,
+                ]);
             return redirect()->back()->with('success', 'User created successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'An error occurred while creating the user');

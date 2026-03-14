@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Log;
 
 class ProductController extends Controller
 {
@@ -33,9 +34,14 @@ class ProductController extends Controller
 
         $product = Product::create($validated);
 
-         return redirect()
-        ->route('products.add-product')
-        ->with('success', 'Product created successfully!');
+        Log::create([
+            'user_id' => auth()->id(),
+            'description' => 'created product: ' . $product->name,
+        ]);
+
+        return redirect()
+            ->route('products.add-product')
+            ->with('success', 'Product created successfully!');
     }
 
     public function edit($id)
@@ -56,6 +62,11 @@ class ProductController extends Controller
 
         $product = Product::findOrFail($id);
         $product->update($request->all());
+
+        Log::create([
+            'user_id' => auth()->id(),
+            'description' => 'updated product: ' . $product->name,
+        ]);
 
         return redirect()
             ->route('products.product')

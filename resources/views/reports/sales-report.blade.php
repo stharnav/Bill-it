@@ -146,7 +146,5 @@
 @include('layouts.footer')
 @include('layouts.script')
 <!-- @include('layouts.datatable-script') -->
-
-
 </body>
 </html>

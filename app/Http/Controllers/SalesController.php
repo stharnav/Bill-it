@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\SalesProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\Company;
+use App\Models\Log;
 
 
 class SalesController extends Controller
@@ -88,6 +89,11 @@ class SalesController extends Controller
                     'price'      => Product::find($product['id'])->price,
                 ]);
             }
+
+                Log::create([
+                    'user_id' => auth()->id(),
+                    'description' => 'created bill: ' . $sale->bill_no,
+                ]);
 
             DB::commit();
 

@@ -56,11 +56,14 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{ asset('uploads/user/' . Auth::user()->user_logo) }}" class="img-circle elevation-2" alt="User Image">
+           @if (Auth::user()->user_logo)
+              <img src="{{ asset('uploads/user/' . Auth::user()->user_logo) }}" width="100" height="100" alt="User Logo" class="img-circle elevation-2">
+            @else
+              <img src="https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg" alt="image" width="100" height="100" class="img-circle elevation-2">
+            @endif
         </div>
         <div class="info">
-          <a href="/about-me" class="d-block">{{ Auth::user()->name }}
-</a>
+          <a href="/about-me" class="d-block">{{ Auth::user()->name }}</a>
         </div>
       </div>
 
@@ -165,7 +168,7 @@
             </ul>
           </li>
 
-          <li class="nav-item {{ $currentPage === 'about-me' || $currentPage === 'about-company' || $currentPage === 'about-users' ? 'menu-open' : '' }}">
+          <li class="nav-item {{ $currentPage === 'about-me' || $currentPage === 'about-company' || $currentPage === 'about-users' || $currentPage === 'about-logs' ? 'menu-open' : '' }}">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-cog"></i>
               <p>
@@ -188,8 +191,14 @@
               </li>
               <li class="nav-item">
                 <a href="/about-users" class="nav-link {{ $currentPage === 'about-users' ? 'active' : '' }}">
-                  <i class="far fa-address-card nav-icon"></i>
+                  <i class="fas fa-users nav-icon"></i>
                   <p>About Users</p>
+                </a>
+              </li>
+               <li class="nav-item">
+                <a href="/about-logs" class="nav-link {{ $currentPage === 'about-logs' ? 'active' : '' }}">
+                  <i class="fas fa-history nav-icon"></i>
+                  <p>Logs</p>
                 </a>
               </li>
             </ul> 
