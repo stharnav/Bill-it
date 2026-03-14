@@ -99,15 +99,15 @@
                     <form class="form-horizontal" method="post" action="{{ route('password.update') }}">
                       @csrf
                       <div class="form-group row">
-                        <label for="inputEmail" class="col-sm-2 col-form-label">Old Password</label>
+                        <label for="oldPassword" class="col-sm-2 col-form-label">Old Password</label>
                         <div class="col-sm-10">
-                          <input type="password" class="form-control" placeholder="Old Password" name="old_password">
+                          <input type="password" class="form-control" id="oldPassword" placeholder="Old Password" name="old_password">
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label for="inputName2" class="col-sm-2 col-form-label">New Password</label>
+                        <label for="newPassword" class="col-sm-2 col-form-label">New Password</label>
                         <div class="col-sm-10">
-                          <input type="password" class="form-control" id="inputName2" placeholder="New Password" name="new_password">
+                          <input type="password" class="form-control" id="newPassword" placeholder="New Password" name="new_password">
                         </div>
                       </div>
                       

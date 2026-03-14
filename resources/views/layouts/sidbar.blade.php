@@ -165,7 +165,7 @@
             </ul>
           </li>
 
-          <li class="nav-item {{ $currentPage === 'about-me' || $currentPage === 'about-company' ? 'menu-open' : '' }}">
+          <li class="nav-item {{ $currentPage === 'about-me' || $currentPage === 'about-company' || $currentPage === 'about-users' ? 'menu-open' : '' }}">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-cog"></i>
               <p>
@@ -186,7 +186,13 @@
                   <p>About Company</p>
                 </a>
               </li>
-            </ul>
+              <li class="nav-item">
+                <a href="/about-users" class="nav-link {{ $currentPage === 'about-users' ? 'active' : '' }}">
+                  <i class="far fa-address-card nav-icon"></i>
+                  <p>About Users</p>
+                </a>
+              </li>
+            </ul> 
           </li>
 
           

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('username')->unique();
             $table->string('password');
             $table->string('user_logo')->nullable();
+            $table->integer('user_type')->default(0); // 0 for admin user, 1 for default user
             $table->rememberToken();
             $table->timestamps();
         });

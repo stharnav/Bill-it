@@ -10,7 +10,7 @@ use App\Http\Controllers\SalesReportController;
 
 Route::middleware(['auth'])->group(function(){
 
-    Route::get('/', [UserController::class, 'index'])->name('home');
+    Route::get('/', [UserController::class, 'welcome'])->name('home');
 
     Route::get('/sales', [SalesController::class, 'index'] )->name('sales.sale');
     Route::get('/sales/search', [SalesController::class, 'search'])->name('sales.search');
@@ -54,6 +54,8 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/about-company', [CompanyController::class, 'index'])->name('company.about-company');
     Route::post('/company/store', [CompanyController::class, 'store'])->name('company.store');
     Route::post('/company/update/{id}', [CompanyController::class, 'update'])->name('company.update');
+    Route::get('/about-users', [UserController::class, 'index'])->name('user.user');
+    Route::post('/user/store', [UserController::class, 'store'])->name('user.add-user');
 
 });
 

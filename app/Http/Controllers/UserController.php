@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index(){
+    public function welcome(){
         $saleCount = \App\Models\Sales::where('is_refund', 0)->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->count();
         $productCount = \App\Models\Product::count();
         $categoryCount = \App\Models\Category::count();
@@ -65,10 +65,10 @@ class UserController extends Controller
     public function updatePassword(Request $request)
     {
         $user = Auth::user();
-        $currentPassword = $request->input('current_password');
-        $newPassword = $request->input('new_password');
-        $decryptedPassword = Hash::make($currentPassword);
-        if (Hash::check($currentPassword, $decryptedPassword)) {
+        $currentPassword = trim($request->input('old_password'));
+        $newPassword = trim($request->input('new_password'));
+
+        if (Hash::check($currentPassword, $user->password)) {
             $user->password = Hash::make($newPassword);
             $user->save();
 
@@ -76,5 +76,30 @@ class UserController extends Controller
         } else {
             return redirect()->back()->with('error', 'Current password is incorrect.');
         }
+    }
+
+    public function index()
+    {
+        $users = User::all();
+        return view('about.about-users', compact('users'), ['currentPage' => 'about-users']);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'username' => 'required|string|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->username = $request->input('username');
+        $user->password = Hash::make($request->input('password'));
+        $user->save();
+
+        return redirect()->back()->with('success', 'User created successfully.');
     }
 }
