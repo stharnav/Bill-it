@@ -58,7 +58,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/about-users', [UserController::class, 'index'])->name('user.user');
     Route::get('/add-user', function () {
         return view('about.add-user', ['currentPage' => 'add-user']);
-    })->name('user.add-user');
+    })->name('user.add-user')->middleware('role:admin');
     Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
     Route::get('/about-logs', [LogController::class, 'index'])->name('about.logs');
 

@@ -102,7 +102,7 @@
                       <td>{{ $index + 1 }}</td>
                       <td>{{ $sale->bill_no }}</td>
                       <td>{{ date('Y-m-d', strtotime($sale->created_at)) }}</td>
-                      <td>{{ ucfirst(str_replace('_', ' ', $sale->mode_of_payment)) }}</td>
+                      <td>{{ $sale->mode_of_payment }}</td>
                       <td>{{ $sale->customer_name }}</td>
                       <td>{{ number_format(($sale->total_price - $sale->discount/100 * $sale->total_price), 2) }}</td>
                       @php
