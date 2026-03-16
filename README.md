@@ -45,11 +45,23 @@ cd bill-it
 composer install
 cp .env.example .env
 php artisan key:generate
+```
+
+## ENV File
+
+```bash
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=billit
 DB_USERNAME=root
 DB_PASSWORD=
+```
+
+## Terminal
+
+```bash
 php artisan migrate
+php artisan db:seed
 php artisan serve
+```
