@@ -65,7 +65,7 @@
                   <h2>
                     @if ($about->company_logo)
                       <img src="{{ asset('uploads/company/' . $about->company_logo) }}" width="100" height="100" alt="Company Logo">
-                    @else if($about->company_name)
+                    @else
                       <i class="fas fa-globe"></i>
                     @endif
                     {{ $about->company_name }}

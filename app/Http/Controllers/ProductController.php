@@ -25,12 +25,19 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {   
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price' => 'required|numeric',
-            'category_id' => 'required|integer|exists:category,id',
-        ]);
+        try{
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'price' => 'required|numeric',
+                'category_id' => 'required|integer|exists:category,id',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()
+                ->back()
+                ->withErrors($e->validator)
+                ->withInput();
+        }
 
         $product = Product::create($validated);
 

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Log extends Model
 {
+    public $timestamps = false;
+    
     protected $fillable = [
         'description',
         'user_id',
