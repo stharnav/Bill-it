@@ -36,14 +36,14 @@
 
 <div class="card-body">
 <h3>{{ $sale->bill_no }}</h3>
-
+<p>*Select product that is not being refunded</p>
 <form method="POST" action="{{ route('sales.store') }}">
-<div class="row mb-3 position-relative border">
+<div class="row mb-3 position-relative">
 
 
     
     @csrf
-    <div class="col border">
+    <div class="col-md">
          <!-- REFUND TABLE -->
         <table class="table table-bordered" id="saleTable">
             <thead>
@@ -89,7 +89,7 @@
     <div class="col">
         <b>Customer name: </b>{{ $sale->customer_name }}
         <br>
-        <textarea name="description" class="form-control" placeholder="Reason for refund"></textarea>
+        <textarea name="description" class="form-control" placeholder="Reason for refund" required></textarea>
         <input type="hidden" name="is_refund" value="1">
         <input type="hidden" name="mode_of_payment" value="{{ $sale->mode_of_payment }}">
         <input type="hidden" name="payment_details" value="{{ $sale->payment_details }}">
