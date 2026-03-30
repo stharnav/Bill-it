@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('user_logo')->nullable();
             $table->integer('user_type')->default(0); // 0 for admin user, 1 for default user
+            $table->integer('status')->default(1); // 1 for active, 0 for inactive
             $table->rememberToken();
             $table->timestamps();
         });

@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
             'username' => 'admin',
             'password' => Hash::make('password'),
             'user_type' => '0',
+            'status' => '1',
         ]);
         
     }
