@@ -196,7 +196,14 @@
               </div>
               <!-- /.row -->
 
-            
+              <!-- QR Code Section -->
+              <div class="row mt-4">
+                <div class="col-12 d-flex align-items-center justify-content-center flex-column">
+                  <img src="{{ $qrCodeDataUri }}" alt="QR Code" style="width: 120px; height: 120px;">
+                  <small class="text-muted mt-1">Scan to view bill {{ $sale->bill_no }}</small>
+                </div>
+              </div>
+
       </div><!-- /.container-fluid -->
     </section>
 

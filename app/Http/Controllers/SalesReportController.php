@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Company;
 use App\Models\Sales;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -13,29 +14,30 @@ class SalesReportController extends Controller
         public function index()
         {
             $categories =  Category::select('id', 'name')->get();
-            return view('reports.sales-report', ['currentPage' => 'sales-report', 'categories' => $categories]);
+            $company = Company::first();
+            return view('reports.sales-report', ['currentPage' => 'sales-report', 'categories' => $categories, 'company' => $company]);
         }
 
         public function search(Request $request)
-        {   
-            $categories =  Category::select('id', 'name')->get();
+        {
+            $categories = Category::select('id', 'name')->get();
 
             $categoryId = $request->input('category_id');
             $startDate = $request->input('start_date');
             $endDate = $request->input('end_date');
+            $modeOfPayment = $request->input('mode_of_payment');
 
             $request->validate([
                 'category_id' => 'nullable|exists:category,id',
                 'start_date' => 'nullable|date',
                 'end_date' => 'nullable|date|after_or_equal:start_date',
+                'mode_of_payment' => 'nullable|integer|between:1,5',
             ]);
 
-            $query = DB::table('sales')
-                ->join('sales_product', 'sales.id', '=', 'sales_product.sale_id')
+            $query = Sales::join('sales_product', 'sales.id', '=', 'sales_product.sale_id')
                 ->select(
                     'sales.id',
                     'sales.bill_no',
-                    // 'sales.category_id',
                     'sales.created_at',
                     'sales.customer_name',
                     'sales.is_refund',
@@ -45,10 +47,20 @@ class SalesReportController extends Controller
                     DB::raw('SUM(sales_product.quantity * sales_product.price) as total_price')
                 );
 
-            // Category filter
-            // if ($categoryId) {
-            //     $query->where('sales.category_id', $categoryId);
-            // }
+            // Mode of payment filter
+            if ($modeOfPayment) {
+                $query->where('sales.mode_of_payment', $modeOfPayment);
+            }
+
+            // Category filter — find sales that have products in the selected category
+            if ($categoryId) {
+                $query->whereIn('sales.id', function ($sub) use ($categoryId) {
+                    $sub->select('sale_id')
+                         ->from('sales_product')
+                         ->join('product', 'sales_product.product_id', '=', 'product.id')
+                         ->where('product.category_id', $categoryId);
+                });
+            }
 
             // Date filter
             if ($startDate && $endDate) {
@@ -59,11 +71,15 @@ class SalesReportController extends Controller
             }
 
             $sales = $query
-                // ->groupBy('sales.id', 'sales.bill_no', 'sales.category_id', 'sales.created_at')
-                ->groupBy('sales.id', 'sales.bill_no', 'sales.created_at', 'sales.customer_name', 'sales.is_refund', 'sales.discount', 'sales.tax', 'sales.mode_of_payment')
+                ->groupBy(
+                    'sales.id', 'sales.bill_no', 'sales.created_at',
+                    'sales.customer_name', 'sales.is_refund', 'sales.discount',
+                    'sales.tax', 'sales.mode_of_payment'
+                )
                 ->get();
 
-            return view('reports.sales-report', ['currentPage' => 'sales-report', 'categories' => $categories], compact('sales'))
+            $company = Company::first();
+            return view('reports.sales-report', ['currentPage' => 'sales-report', 'categories' => $categories, 'company' => $company], compact('sales'))
                 ->with('success', 'Sales report generated successfully.');
         }
 }

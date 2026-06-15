@@ -50,6 +50,7 @@
                                 <th>Email</th>
                                 <th>Username</th>
                                 <th>User Type</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -68,13 +69,33 @@
                                         <td>{{ $user->username }}</td>
                                         <td>{{ $user->user_type == 0 ? 'Admin' : 'User' }}</td>
                                         <td>
-                                            
-                                            <a href="#" class="btn btn-sm btn-danger">Delete</a>
+                                            @if ($user->status == 1)
+                                                <span class="badge badge-success">Active</span>
+                                            @else
+                                                <span class="badge badge-danger">Inactive</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <form action="{{ route('user.destroy', $user->id) }}" method="POST" style="display:inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete user {{ $user->name }}?')">Delete</button>
+                                            </form>
+                                            <button type="button" class="btn btn-sm btn-info"
+                                                data-toggle="modal" data-target="#editUserModal"
+                                                data-id="{{ $user->id }}"
+                                                data-name="{{ $user->name }}"
+                                                data-email="{{ $user->email }}"
+                                                data-username="{{ $user->username }}"
+                                                data-user-type="{{ $user->user_type }}"
+                                                data-status="{{ $user->status }}">
+                                                Edit
+                                            </button>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="text-center">No users found</td>
+                                        <td colspan="7" class="text-center">No users found</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -86,6 +107,7 @@
                                 <th>Email</th>
                                 <th>Username</th>
                                 <th>User Type</th>
+                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                             </tfoot>
@@ -101,6 +123,76 @@
 @include('layouts.footer')
 @include('layouts.script')
 @include('layouts.datatable-script')
+
+<!-- Edit User Modal -->
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="editUserForm" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="edit_name">Name</label>
+                        <input type="text" class="form-control" id="edit_name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_email">Email</label>
+                        <input type="email" class="form-control" id="edit_email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_username">Username</label>
+                        <input type="text" class="form-control" id="edit_username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_user_type">User Type</label>
+                        <select class="form-control" id="edit_user_type" name="user_type">
+                            <option value="0">Admin</option>
+                            <option value="1">User</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_status">Status</label>
+                        <select class="form-control" id="edit_status" name="status">
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Update User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+$('#editUserModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var id = button.data('id');
+    var name = button.data('name');
+    var email = button.data('email');
+    var username = button.data('username');
+    var userType = button.data('user-type');
+    var status = button.data('status');
+
+    var modal = $(this);
+    modal.find('#edit_name').val(name);
+    modal.find('#edit_email').val(email);
+    modal.find('#edit_username').val(username);
+    modal.find('#edit_user_type').val(userType);
+    modal.find('#edit_status').val(status);
+    modal.find('#editUserForm').attr('action', '{{ url('/user') }}/' + id);
+});
+</script>
 
 </body>
 </html>

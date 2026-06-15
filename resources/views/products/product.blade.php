@@ -44,6 +44,8 @@
                     <th>Rank</th>
                     <th>Product Name</th>
                     <th>Price</th>
+                    <th>Stock</th>
+                    <th>SKU</th>
                     <th>Category</th>
                     <th>Action</th>
                   </tr>
@@ -54,15 +56,29 @@
                           <td>{{ $loop->iteration }}</td>
                           <td>{{ $product->name }}</td>
                           <td>{{ $product->price }}</td>
+                          <td>
+                              @if ($product->stock > 5)
+                                  <span class="badge badge-success">{{ $product->stock }}</span>
+                              @elseif ($product->stock > 0)
+                                  <span class="badge badge-warning">{{ $product->stock }}</span>
+                              @else
+                                  <span class="badge badge-danger">Out of Stock</span>
+                              @endif
+                          </td>
+                          <td>{{ $product->sku_number ?? 'N/A' }}</td>
                           <td>{{ $product->category->name ?? 'N/A' }}</td>
                           <td>
                               <a href="{{ route('product.edit', $product->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                              <a href="#" class="btn btn-sm btn-danger">Delete</a>
+                              <form action="{{ route('product.destroy', $product->id) }}" method="POST" style="display:inline">
+                                  @csrf
+                                  @method('DELETE')
+                                  <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this product?')">Delete</button>
+                              </form>
                           </td>
                       </tr>
                   @empty
                       <tr>
-                          <td colspan="5">No products found.</td>
+                          <td colspan="7">No products found.</td>
                       </tr>
                   @endforelse
                   </tbody>
@@ -71,6 +87,8 @@
                     <th>Rank</th>
                     <th>Product name</th>
                     <th>Price</th>
+                    <th>Stock</th>
+                    <th>SKU</th>
                     <th>Category</th>
                     <th>Action</th>
                   </tr>

@@ -4,8 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sales Report</title>
-    
+
     @include('layouts.header')
+
+    <style>
+    /* Print header — only visible when printing */
+    .report-header {
+        display: none;
+        text-align: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #333;
+    }
+    .report-header h2 {
+        margin: 0 0 5px 0;
+        font-weight: bold;
+        color: #333;
+    }
+    .report-header .report-date {
+        font-size: 14px;
+        color: #555;
+        margin: 0;
+    }
+    @media print {
+        .report-header {
+            display: block !important;
+        }
+        .content-header,
+        .card:first-of-type,
+        form,
+        .breadcrumb,
+        .main-header,
+        .main-sidebar,
+        .main-footer,
+        .btn {
+            display: none !important;
+        }
+        .content-wrapper {
+            margin-left: 0 !important;
+            padding: 0 !important;
+        }
+        body {
+            font-size: 12px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+    }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -55,30 +102,45 @@
               </div>
               <div class="col-md">
                 <label for="mode_of_payment">Mode of Payment</label>
-                <select class="form-control" id="mode_of_payment" name="mode_of_payment" disabled>
-                  <option value="all">All</option>
-                  <option value="cash">Cash</option>
-                  <option value="credit_card">Credit Card</option>
-                  <option value="debit_card">Debit Card</option>
-                  <option value="mobile_payment">Mobile Payment</option>
+                <select class="form-control" id="mode_of_payment" name="mode_of_payment">
+                  <option value="">All</option>
+                  <option value="1" {{ request('mode_of_payment') == '1' ? 'selected' : '' }}>Cash</option>
+                  <option value="2" {{ request('mode_of_payment') == '2' ? 'selected' : '' }}>Fonepay</option>
+                  <option value="3" {{ request('mode_of_payment') == '3' ? 'selected' : '' }}>Credit Card</option>
+                  <option value="4" {{ request('mode_of_payment') == '4' ? 'selected' : '' }}>Debit Card</option>
+                  <option value="5" {{ request('mode_of_payment') == '5' ? 'selected' : '' }}>Bank Transfer</option>
                 </select>
               </div>
               <div class="col-md">
-                <label for="category">Category</label>
-                <select class="form-control" id="category" name="category" disabled>
-                  <option value="all">All</option>
+                <label for="category_id">Category</label>
+                <select class="form-control" id="category_id" name="category_id">
+                  <option value="">All</option>
                   @foreach($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
                   @endforeach
                 </select>
               </div>
               <div class="col-md-2">
                 <input type="submit" value="Create Report" class="btn btn-primary mt-4 form-control">
               </div>
+              <div class="col-md-2">
+                <button onclick="window.print()" class="btn btn-secondary mt-4 form-control">Print Report</button>
+              </div>
             </div>
             </form>
           </div>
         </div>
+        <!-- Print header with company name and date -->
+        <div class="report-header">
+            <h2>{{ $company ? $company->company_name : 'Sales Report' }}</h2>
+            <p class="report-date">
+                Report Period:
+                {{ request('start_date') ? date('F j, Y', strtotime(request('start_date'))) : date('F j, Y', strtotime('-30 days')) }}
+                —
+                {{ request('end_date') ? date('F j, Y', strtotime(request('end_date'))) : date('F j, Y') }}
+            </p>
+        </div>
+
         <div class="card">
               <div class="card-body">
                 <table id="example1" class="table table-bordered table-striped">
@@ -145,6 +207,35 @@
 </div>
 @include('layouts.footer')
 @include('layouts.script')
-<!-- @include('layouts.datatable-script') -->
+
+<!-- Override DataTable with print customization for company name + date -->
+<script>
+$(function() {
+    if ($.fn.DataTable.isDataTable('#example1')) {
+        $('#example1').DataTable().destroy();
+    }
+    $('#example1').DataTable({
+        responsive: true,
+        lengthChange: false,
+        autoWidth: false,
+        dom: 'lBfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf',
+            {
+                extend: 'print',
+                customize: function (win) {
+                    $(win.document.body).prepend(
+                        '<div style="text-align:center;margin-bottom:20px;padding-bottom:15px;border-bottom:2px solid #333;">' +
+                            '<h2>{{ $company ? $company->company_name : "Sales Report" }}</h2>' +
+                            '<p style="font-size:14px;color:#555;margin:5px 0 0;">Report Period: {{ request("start_date") ? date("F j, Y", strtotime(request("start_date"))) : date("F j, Y", strtotime("-30 days")) }} &mdash; {{ request("end_date") ? date("F j, Y", strtotime(request("end_date"))) : date("F j, Y") }}</p>' +
+                        '</div>'
+                    );
+                }
+            },
+            'colvis'
+        ]
+    });
+});
+</script>
 </body>
 </html>

@@ -72,6 +72,13 @@
                           </div>
                         </div>
                         <div class="form-group row">
+                          <label for="password" class="col-sm-2 col-form-label">Password</label>
+                          <div class="col-sm-10">
+                            <input type="password" class="form-control" id="password" placeholder="Leave blank for auto-generated" name="password">
+                            <small class="text-muted">Leave blank to auto-generate a password based on username</small>
+                          </div>
+                        </div>
+                        <div class="form-group row">
                           <label for="inputName2" class="col-sm-2 col-form-label">User Type</label>
                           <div class="col-sm-10">
                             <select class="form-control" name="user_type" id="inputName2">

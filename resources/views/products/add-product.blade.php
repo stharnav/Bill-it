@@ -68,10 +68,14 @@
                   <br>
                   <div class="row">
                     <div class="col">
-                      <input type="number" class="form-control" placeholder="Price" name="price" required>
+                      <input type="number" class="form-control" placeholder="Price" name="price" step="0.01" required>
+                    </div>
+                    <div class="col">
+                      <input type="number" class="form-control" placeholder="Stock" name="stock" min="0" value="0">
                     </div>
                      <div class="col">
-                      <input type="text" class="form-control" placeholder="SKU Number" name="sku_number">
+                      <input type="text" class="form-control" placeholder="Leave empty to auto-generate" name="sku_number" id="sku_number">
+                      <small class="form-text text-muted">Leave empty to auto-generate</small>
                     </div>
                     <div class="col form-group">
                       <select name="category_id" class="form-control">
@@ -109,5 +113,26 @@
 </div>
 @include('layouts.footer')
 @include('layouts.script')
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const skuInput = document.getElementById('sku_number');
+    const suggestedSku = @json($suggestedSku);
+
+    // Pre-fill with suggested SKU on page load
+    if (skuInput && !skuInput.value) {
+        skuInput.value = suggestedSku;
+    }
+
+    // On focus, if empty, restore suggestion
+    if (skuInput) {
+        skuInput.addEventListener('focus', function() {
+            if (!this.value.trim()) {
+                this.value = suggestedSku;
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>

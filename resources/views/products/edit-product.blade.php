@@ -75,7 +75,17 @@
                                            class="form-control"
                                            value="{{ $product->price }}"
                                            placeholder="Price"
+                                           step="0.01"
                                            required>
+                                </div>
+
+                                <div class="col">
+                                    <input type="number"
+                                           name="stock"
+                                           class="form-control"
+                                           value="{{ $product->stock }}"
+                                           placeholder="Stock"
+                                           min="0">
                                 </div>
 
                                 <div class="col">
@@ -84,6 +94,7 @@
                                            class="form-control"
                                            value="{{ $product->sku_number }}"
                                            placeholder="SKU Number">
+                                    <small class="form-text text-muted">Leave empty to keep current SKU</small>
                                 </div>
 
                                 <div class="col">

@@ -139,7 +139,7 @@ $('#product_name').on('input', function () {
     $.ajax({
         url: "{{ route('sales.search') }}",
         type: "GET",
-        data: { term: query },
+        data: { search: query },
         success: function (data) {
             products = data;
             let list = '';

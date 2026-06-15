@@ -3,15 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
+    use HasFactory;
+
     protected $table = 'product';
 
     protected $fillable = [
         'name',
         'description',
         'price',
+        'stock',
+        'sku_number',
         'category_id',
     ];
 

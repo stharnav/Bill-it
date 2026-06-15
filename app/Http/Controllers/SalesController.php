@@ -9,6 +9,8 @@ use App\Models\SalesProduct;
 use Illuminate\Support\Facades\DB;
 use App\Models\Company;
 use App\Models\Log;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\SvgWriter;
 
 
 class SalesController extends Controller
@@ -82,12 +84,16 @@ class SalesController extends Controller
             ========================== */
 
             foreach ($request->products as $product) {
+                $productModel = Product::find($product['id']);
                 SalesProduct::create([
                     'sale_id'    => $sale->id,
                     'product_id' => $product['id'],
                     'quantity'   => $product['qty'],
-                    'price'      => Product::find($product['id'])->price,
+                    'price'      => $productModel->price,
                 ]);
+
+                // Decrement stock
+                $productModel->decrement('stock', $product['qty']);
             }
 
                 Log::create([
@@ -102,11 +108,67 @@ class SalesController extends Controller
                 ->with('success', 'Sale created successfully');
 
         } catch (\Exception $e) {
-            dd($e->getMessage());
             DB::rollback();
             return redirect()
                 ->back()
                 ->with('error', 'Something went wrong');
+        }
+    }
+
+    public function processRefund(Request $request)
+    {
+        $request->validate([
+            'products' => 'required|array',
+            'description' => 'nullable|string',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $lastSale = Sales::latest()->first();
+            $nextId = $lastSale ? $lastSale->id + 1 : 1;
+            $billNo = 'REF-' . str_pad($nextId, 5, '0', STR_PAD_LEFT);
+
+            $sale = Sales::create([
+                'bill_no' => $billNo,
+                'mode_of_payment' => $request->mode_of_payment,
+                'payment_details' => $request->payment_details,
+                'description' => $request->description,
+                'discount' => $request->discount ?? 0,
+                'tax' => $request->tax ?? 0,
+                'customer_name' => $request->customer_name ?? null,
+                'is_refund' => 1,
+            ]);
+
+            foreach ($request->products as $product) {
+                $productModel = Product::find($product['id']);
+                SalesProduct::create([
+                    'sale_id'    => $sale->id,
+                    'product_id' => $product['id'],
+                    'quantity'   => $product['qty'],
+                    'price'      => $product['price'] ?? $productModel->price,
+                ]);
+
+                // Increment stock on refund
+                $productModel->increment('stock', $product['qty']);
+            }
+
+            Log::create([
+                'user_id' => auth()->id(),
+                'description' => 'processed refund: ' . $sale->bill_no,
+            ]);
+
+            DB::commit();
+
+            return redirect()
+                ->route('sales.bill', $sale->id)
+                ->with('success', 'Refund processed successfully');
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()
+                ->back()
+                ->with('error', 'Something went wrong while processing the refund');
         }
     }
 
@@ -115,7 +177,14 @@ class SalesController extends Controller
         $about = Company::first();
         $sale = Sales::all()->where('id', $id)->first();
         $sale_items = SalesProduct::with('product')->where('sale_id', $id)->get();
-        return view('sales.bill', compact('sale', 'about', 'sale_items'), ['currentPage' => 'sales']);
+
+        // Generate QR code from bill number
+        $qrCode = new QrCode($sale->bill_no);
+        $writer = new SvgWriter();
+        $qrResult = $writer->write($qrCode);
+        $qrCodeDataUri = $qrResult->getDataUri();
+
+        return view('sales.bill', compact('sale', 'about', 'sale_items', 'qrCodeDataUri'), ['currentPage' => 'sales']);
     }
 
     public function refund($id)

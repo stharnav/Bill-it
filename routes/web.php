@@ -32,6 +32,8 @@ Route::middleware(['auth'])->group(function(){
 
     Route::put('/product/{id}', [ProductController::class, 'update'])
         ->name('product.update');
+    Route::delete('/product/{id}', [ProductController::class, 'destroy'])
+        ->name('product.destroy');
 
 
 
@@ -43,6 +45,7 @@ Route::middleware(['auth'])->group(function(){
     })->name('categories.add-category');
     Route::get('/category/{id}/editCategory', [CategoryController::class, 'edit'])->name('category.edit');
     Route::put('/category/{id}', [CategoryController::class, 'update'])->name('category.update');
+    Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 
     Route::get('/sales-report', [SalesReportController::class, 'index'])->name('reports.sales-report');
     Route::get('/sales-report/search', [SalesReportController::class, 'search'])->name('reports.sales-report.search');
@@ -60,6 +63,8 @@ Route::middleware(['auth'])->group(function(){
         return view('about.add-user', ['currentPage' => 'add-user']);
     })->name('user.add-user')->middleware('role:admin');
     Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
+    Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
+    Route::delete('/user/{id}', [UserController::class, 'destroy'])->name('user.destroy');
     Route::get('/about-logs', [LogController::class, 'index'])->name('about.logs');
 
 });

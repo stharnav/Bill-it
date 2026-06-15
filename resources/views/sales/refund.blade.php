@@ -37,7 +37,7 @@
 <div class="card-body">
 <h3>{{ $sale->bill_no }}</h3>
 <p>*Select product that is not being refunded</p>
-<form method="POST" action="{{ route('sales.store') }}">
+<form method="POST" action="{{ route('sales.processRefund') }}">
 <div class="row mb-3 position-relative">
 
 

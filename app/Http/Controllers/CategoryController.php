@@ -61,4 +61,20 @@ class CategoryController extends Controller
                          ->with('success', 'Category updated successfully!');
     }
 
+    public function destroy($id)
+    {
+        $category = Category::findOrFail($id);
+        $categoryName = $category->name;
+        $category->delete();
+
+        Log::create([
+            'user_id' => auth()->id(),
+            'description' => 'deleted category: ' . $categoryName,
+        ]);
+
+        return redirect()
+            ->route('categories.category')
+            ->with('success', 'Category deleted successfully!');
+    }
+
 }

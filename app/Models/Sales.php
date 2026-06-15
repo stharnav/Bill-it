@@ -18,4 +18,9 @@ class Sales extends Model
         'customer_name',
         'is_refund',
     ];
+
+    public function items()
+    {
+        return $this->hasMany(SalesProduct::class, 'sale_id');
+    }
 }
